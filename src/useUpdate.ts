@@ -64,7 +64,7 @@ const reduceOnStart = (
     callbacks.onStart();
     callbacks.onInteractiveChange(value);
     if (state.tracking) {
-        callbacks.onChange(value);
+        //callbacks.onChange(value);
     }
     return {
         ...state,
@@ -96,7 +96,7 @@ const reduceOnMove = (
     const value = getValueFromPercentage({ ...state, ...position2 });
     callbacks.onInteractiveChange(value);
     if (state.tracking) {
-        callbacks.onChange(value);
+        //callbacks.onChange(value);
     }
     return {
         ...state,
@@ -112,7 +112,7 @@ const reduceOnStop = (
 ): InternalState => {
     if (state.value !== null) {
         if (!state.tracking) {
-            callbacks.onChange(state.value);
+            //callbacks.onChange(state.value);
         }
     }
     callbacks.onEnd();
@@ -135,7 +135,7 @@ const reduceOnCancel = (
     const value = state.startValue as number;
     callbacks.onEnd();
     if (state.tracking) {
-        callbacks.onChange(value);
+        //callbacks.onChange(value);
     }
     return {
         ...state,
@@ -163,7 +163,7 @@ const reduceOnSteps = (
         state.max,
         state.value + 1 * action.direction,
     );
-    callbacks.onChange(value);
+    //callbacks.onChange(value);
     return {
         ...state,
         value,
@@ -244,6 +244,9 @@ export default ({
         [useMouseWheel, readOnly],
     );
 
+    useEffect(() => {
+        callbacks.onChange(value || 0);
+    }, [value])
     return {
         svg,
         container,
