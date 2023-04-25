@@ -224,7 +224,7 @@ export default ({
         angleOffset,
         angleRange,
         mouseAngle: null,
-        percentage: initialValue ? (initialValue - min) / (max - min) : 0,
+        percentage: (initialValue !== null && initialValue !== undefined) ? (initialValue - min) / (max - min) : 0,
         value: initialValue || 0,
         svg,
         tracking,
