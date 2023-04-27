@@ -27,7 +27,7 @@ interface InternalState {
     steps?: number;
     svg: any;
     container: any;
-    sendCallback: boolean;
+    callBackValue: number;
 }
 
 interface KnobConfiguration extends Callbacks {
@@ -74,7 +74,6 @@ const reduceOnStart = (
         startPercentage: state.percentage as number,
         startValue: state.value as number,
         value,
-        sendCallback: true,
     };
 };
 
@@ -102,7 +101,6 @@ const reduceOnMove = (
     }
     return {
         ...state,
-        sendCallback: true,
         ...position2,
         value,
     };
@@ -123,7 +121,6 @@ const reduceOnStop = (
         ...state,
         isActive: false,
         value: state.value,
-        sendCallback: true,
         percentage: state.percentage,
         startPercentage: undefined,
         startValue: undefined,
@@ -145,7 +142,6 @@ const reduceOnCancel = (
         ...state,
         isActive: false,
         value,
-        sendCallback: true,
         percentage,
         startPercentage: undefined,
         startValue: undefined,
@@ -172,7 +168,7 @@ const reduceOnSteps = (
     return {
         ...state,
         value,
-        sendCallback: true,
+        callBackValue: value,
         percentage: getPercentageFromValue({ ...state, value }),
     };
 };
@@ -192,7 +188,6 @@ const reduceOnSet = (
     return {
         ...state,
         value: newValue,
-        sendCallback: false,
         percentage: percentage,
     };
 };
@@ -244,7 +239,7 @@ export default ({
         onStart,
         onEnd,
     };
-    const [{ percentage, value , sendCallback}, dispatch] = useReducer(reducer(callbacks), {
+    const [{ percentage, value , callBackValue}, dispatch] = useReducer(reducer(callbacks), {
         isActive: false,
         min,
         max,
@@ -259,7 +254,7 @@ export default ({
         container,
         size,
         steps,
-        sendCallback: true
+        callBackValue: initialValue || 0
     });
 
     useEffect(
@@ -274,10 +269,10 @@ export default ({
     );
 
     useEffect(() => {
-        if (sendCallback === true) {
-           callbacks.onChange(value || 0);
-        }
-    }, [value, sendCallback])
+        
+        callbacks.onChange(callBackValue);
+        
+    }, [callBackValue])
 
     const setValue = (newValue: number) => {
         console.log("KNOB: In setValue");
