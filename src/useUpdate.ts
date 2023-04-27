@@ -27,6 +27,7 @@ interface InternalState {
     steps?: number;
     svg: any;
     container: any;
+    sendCallback: boolean;
 }
 
 interface KnobConfiguration extends Callbacks {
@@ -167,6 +168,7 @@ const reduceOnSteps = (
     return {
         ...state,
         value,
+        sendCallback: true,
         percentage: getPercentageFromValue({ ...state, value }),
     };
 };
@@ -186,6 +188,7 @@ const reduceOnSet = (
     return {
         ...state,
         value: newValue,
+        sendCallback: false,
         percentage: percentage,
     };
 };
@@ -237,7 +240,7 @@ export default ({
         onStart,
         onEnd,
     };
-    const [{ percentage, value }, dispatch] = useReducer(reducer(callbacks), {
+    const [{ percentage, value , sendCallback}, dispatch] = useReducer(reducer(callbacks), {
         isActive: false,
         min,
         max,
@@ -252,6 +255,7 @@ export default ({
         container,
         size,
         steps,
+        sendCallback: true
     });
 
     useEffect(
@@ -266,8 +270,10 @@ export default ({
     );
 
     useEffect(() => {
-        callbacks.onChange(value || 0);
-    }, [value])
+        if (sendCallback === true) {
+           callbacks.onChange(value || 0);
+        }
+    }, [value, sendCallback])
 
     const setValue = (newValue: number) => {
         console.log("KNOB: In setValue");
