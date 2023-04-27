@@ -74,6 +74,7 @@ const reduceOnStart = (
         startPercentage: state.percentage as number,
         startValue: state.value as number,
         value,
+        callBackValue: value,
     };
 };
 
@@ -103,6 +104,7 @@ const reduceOnMove = (
         ...state,
         ...position2,
         value,
+        callBackValue: value,
     };
 };
 
@@ -143,6 +145,7 @@ const reduceOnCancel = (
         isActive: false,
         value,
         percentage,
+        callBackValue: value,
         startPercentage: undefined,
         startValue: undefined,
     };
