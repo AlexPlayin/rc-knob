@@ -1,4 +1,4 @@
-import React, { isValidElement, KeyboardEventHandler } from 'react';
+import React, { isValidElement, KeyboardEventHandler, useEffect } from 'react';
 import useUpdate from './useUpdate';
 import { Arc } from './Arc';
 import { Pointer } from './Pointer';
@@ -83,7 +83,10 @@ export const Knob = ({
         onStart,
         onEnd,
     });
-    setValue(initialValue || 0);
+
+    useEffect(() => {
+        setValue(initialValue || 0);
+    }, [initialValue])
     return (
         <div
             ref={container}
