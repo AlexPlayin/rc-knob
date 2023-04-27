@@ -86,6 +86,7 @@ export const Knob = ({
 
     useEffect(() => {
         setValue(initialValue || 0);
+        console.log("KNOB: Effect setValue", initialValue);
     }, [initialValue])
     return (
         <div

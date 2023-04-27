@@ -181,11 +181,12 @@ const reduceOnSet = (
     }
     if (action.steps === null || action.steps === undefined) return state;
     const newValue = action.steps;
-
+    const percentage = getPercentageFromValue({ ...state, value: newValue });
+    console.log("KNOB: In Dispatch on Set", newValue, percentage)
     return {
         ...state,
         value: newValue,
-        percentage: getPercentageFromValue({ ...state, value: newValue }),
+        percentage: percentage,
     };
 };
 
@@ -269,6 +270,7 @@ export default ({
     }, [value])
 
     const setValue = (newValue: number) => {
+        console.log("KNOB: In setValue");
         dispatch({
             type: "SET",
             steps: newValue
