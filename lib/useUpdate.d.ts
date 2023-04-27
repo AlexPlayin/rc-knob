@@ -19,5 +19,6 @@ declare const _default: ({ min, max, multiRotation, initialValue, angleOffset, a
     percentage: number | null;
     value: number | null;
     onKeyDown: (e: import("react").KeyboardEvent<HTMLDivElement>) => void;
+    setValue: (newValue: number) => void;
 };
 export default _default;
