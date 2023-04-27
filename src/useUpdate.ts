@@ -171,6 +171,24 @@ const reduceOnSteps = (
     };
 };
 
+const reduceOnSet = (
+    state: InternalState,
+    action: Action,
+    callbacks: Callbacks,
+): InternalState => {
+    if (state.value === null) {
+        return state;
+    }
+    if (action.steps === null || action.steps === undefined) return state;
+    const newValue = action.steps;
+
+    return {
+        ...state,
+        value: newValue,
+        percentage: getPercentageFromValue({ ...state, value: newValue }),
+    };
+};
+
 const reducer =
     (callbacks: Callbacks) =>
     (state: InternalState, action: Action): InternalState => {
@@ -185,6 +203,8 @@ const reducer =
                 return reduceOnCancel(state, action, callbacks);
             case 'STEPS':
                 return reduceOnSteps(state, action, callbacks);
+            case 'SET':
+                return reduceOnSet(state, action, callbacks);
             default:
                 return { ...state, isActive: false, value: state.value };
         }
@@ -247,11 +267,20 @@ export default ({
     useEffect(() => {
         callbacks.onChange(value || 0);
     }, [value])
+
+    const setValue = (newValue: number) => {
+        dispatch({
+            type: "SET",
+            steps: newValue
+        });
+    }
+
     return {
         svg,
         container,
         percentage: percentage,
         value: value,
         onKeyDown: onKeyDown(dispatch),
+        setValue
     };
 };

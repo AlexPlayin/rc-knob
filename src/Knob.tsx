@@ -65,7 +65,7 @@ export const Knob = ({
     ariaLabelledBy,
     className,
 }: React.PropsWithChildren<Props>) => {
-    const { percentage, value, svg, container, onKeyDown } = useUpdate({
+    const { percentage, value, svg, container, onKeyDown , setValue} = useUpdate({
         min,
         max,
         multiRotation,
@@ -83,7 +83,7 @@ export const Knob = ({
         onStart,
         onEnd,
     });
-
+    setValue(initialValue || 0);
     return (
         <div
             ref={container}
