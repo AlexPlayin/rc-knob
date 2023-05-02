@@ -117,7 +117,7 @@ const reduceOnMove = (
     
     const steps = action.steps || state.steps || state.max - state.min;
     //console.log("per", state.startPercentage, (deltaX + deltaY)/(state.max - state.min), deltaX, deltaY, state.max, state.min, steps)
-    const percentage = snapPercentage((state.startPercentage as number + (deltaX + deltaY)/(state.max - state.min)), steps);
+    const percentage = snapPercentage((state.startPercentage as number + (deltaX + deltaY)/(steps)), steps);
     //console.log("pr2", percentage)
     //const position2 = snapPosition(position, state, steps);
     const mouseAngle = (state.angleOffset + state.angleRange * percentage) % 360;
