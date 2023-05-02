@@ -80,8 +80,8 @@ const reduceOnStart = (
         startY: action.mouseY,
         startPercentage: state.percentage as number,
         startValue: state.value as number,
-        value,
-        callBackValue: value,
+        //value,
+        //callBackValue: value,
     };
 };
 
