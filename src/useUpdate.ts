@@ -116,12 +116,13 @@ const reduceOnMove = (
     const deltaY = -Math.round(action.mouseY - startY) / factor;
     
     const steps = action.steps || state.steps || state.max - state.min;
-    //console.log("per", state.startPercentage, (deltaX + deltaY)/(state.max - state.min), deltaX, deltaY, state.max, state.min, steps)
+    console.log("per", state.startPercentage, (deltaX + deltaY)/(state.max - state.min), deltaX, deltaY, state.max, state.min, steps)
     const percentage = snapPercentage((state.startPercentage as number + (deltaX + deltaY)/(steps)), steps);
-    //console.log("pr2", percentage)
+    console.log("pr2", percentage)
     //const position2 = snapPosition(position, state, steps);
     const mouseAngle = (state.angleOffset + state.angleRange * percentage) % 360;
     const value = getValueFromPercentage({ ...state, percentage });
+    console.log("Value", value)
     callbacks.onInteractiveChange(value);
     if (state.tracking) {
         //callbacks.onChange(value);
