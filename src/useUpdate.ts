@@ -110,10 +110,10 @@ const reduceOnMove = (
     const factor = 10;
 
     // @ts-ignore
-    const deltaX = (action.mouseX - startX) / factor;
+    const deltaX = Math.round(action.mouseX - startX) / factor;
 
     // @ts-ignore
-    const deltaY = -(action.mouseY - startY) / factor;
+    const deltaY = -Math.round(action.mouseY - startY) / factor;
     
     const steps = action.steps || state.steps || state.max - state.min;
     //console.log("per", state.startPercentage, (deltaX + deltaY)/(state.max - state.min), deltaX, deltaY, state.max, state.min, steps)
