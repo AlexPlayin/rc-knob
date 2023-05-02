@@ -5,6 +5,7 @@ import {
     clamp,
     getPercentageFromValue,
     snapPosition,
+    snapPercentage,
 } from './utils';
 import { onKeyDown, handleEventListener } from './eventHandling';
 import type { Action, Callbacks } from 'types';
@@ -28,6 +29,8 @@ interface InternalState {
     svg: any;
     container: any;
     callBackValue: number;
+    startX?: number;
+    startY?: number;
 }
 
 interface KnobConfiguration extends Callbacks {
@@ -70,7 +73,11 @@ const reduceOnStart = (
     return {
         ...state,
         isActive: true,
-        ...position2,
+        //...position2,
+        // @ts-ignore
+        startX: action.mouseX,
+        // @ts-ignore
+        startY: action.mouseY,
         startPercentage: state.percentage as number,
         startValue: state.value as number,
         value,
@@ -83,7 +90,9 @@ const reduceOnMove = (
     action: Action,
     callbacks: Callbacks,
 ): InternalState => {
-    const mouseAngle = state.mouseAngle as number;
+
+    //console.log("IN ", action);
+    /*const mouseAngle = state.mouseAngle as number;
     const percentage = state.percentage as number;
     const position = calculatePositionFromMouseAngle({
         previousMouseAngle: state.mouseAngle,
@@ -93,16 +102,36 @@ const reduceOnMove = (
         percentage: percentage,
         ...action,
     });
-    const steps = action.steps || state.steps;
-    const position2 = snapPosition(position, state, steps);
-    const value = getValueFromPercentage({ ...state, ...position2 });
+    */
+    const startX = state.startX as number;
+    const startY = state.startY as number;
+
+    const factor = 10;
+
+    // @ts-ignore
+    const deltaX = (action.mouseX - startX) / factor;
+
+    // @ts-ignore
+    const deltaY = -(action.mouseY - startY) / factor;
+    
+    const steps = action.steps || state.steps || state.max - state.min;
+    //console.log("per", state.startPercentage, (deltaX + deltaY)/(state.max - state.min), deltaX, deltaY, state.max, state.min, steps)
+    const percentage = snapPercentage((state.startPercentage as number + (deltaX + deltaY)/(state.max - state.min)), steps);
+    //console.log("pr2", percentage)
+    //const position2 = snapPosition(position, state, steps);
+    const mouseAngle = (state.angleOffset + state.angleRange * percentage) % 360;
+    const value = getValueFromPercentage({ ...state, percentage });
     callbacks.onInteractiveChange(value);
     if (state.tracking) {
         //callbacks.onChange(value);
     }
+    //console.log(percentage)
+   //console.log("EYY", mouseAngle, value, percentage)
     return {
         ...state,
-        ...position2,
+        mouseAngle: mouseAngle < 0 ? mouseAngle + 360 : mouseAngle,
+        percentage,
+        //...position2,
         value,
         callBackValue: value,
     };
@@ -126,6 +155,8 @@ const reduceOnStop = (
         percentage: state.percentage,
         startPercentage: undefined,
         startValue: undefined,
+        startX: undefined,
+        startY: undefined
     };
 };
 
