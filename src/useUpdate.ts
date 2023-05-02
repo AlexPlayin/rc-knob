@@ -52,6 +52,7 @@ const reduceOnStart = (
     action: Action,
     callbacks: Callbacks,
 ): InternalState => {
+    console.log("start");
     const mouseAngle = state.mouseAngle as number;
     const percentage = state.percentage as number;
     const position = calculatePositionFromMouseAngle({
@@ -90,7 +91,7 @@ const reduceOnMove = (
     action: Action,
     callbacks: Callbacks,
 ): InternalState => {
-
+    console.log("MOVE")
     //console.log("IN ", action);
     /*const mouseAngle = state.mouseAngle as number;
     const percentage = state.percentage as number;
@@ -142,6 +143,7 @@ const reduceOnStop = (
     action: Action,
     callbacks: Callbacks,
 ): InternalState => {
+    console.log("STOP")
     if (state.value !== null) {
         if (!state.tracking) {
             //callbacks.onChange(state.value);
@@ -165,6 +167,7 @@ const reduceOnCancel = (
     action: Action,
     callbacks: Callbacks,
 ): InternalState => {
+    console.log("CANCEL")
     const percentage = state.startPercentage as number;
     const value = state.startValue as number;
     callbacks.onEnd();
@@ -187,6 +190,7 @@ const reduceOnSteps = (
     action: Action,
     callbacks: Callbacks,
 ): InternalState => {
+    console.log("STEPS")
     if (action.direction === undefined) {
         throw Error('Missing direction from Steps action');
     }
