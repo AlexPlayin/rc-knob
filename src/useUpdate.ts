@@ -52,7 +52,7 @@ const reduceOnStart = (
     action: Action,
     callbacks: Callbacks,
 ): InternalState => {
-    console.log("start");
+    console.debug("start");
     const mouseAngle = state.mouseAngle as number;
     const percentage = state.percentage as number;
     const position = calculatePositionFromMouseAngle({
@@ -91,7 +91,7 @@ const reduceOnMove = (
     action: Action,
     callbacks: Callbacks,
 ): InternalState => {
-    console.log("MOVE")
+    console.debug("MOVE")
     //console.log("IN ", action);
     /*const mouseAngle = state.mouseAngle as number;
     const percentage = state.percentage as number;
@@ -116,9 +116,9 @@ const reduceOnMove = (
     const deltaY = -Math.round(action.mouseY - startY) / factor;
     
     const steps = action.steps || state.steps || state.max - state.min;
-    console.log("per", state.startPercentage, (deltaX + deltaY)/(state.max - state.min), deltaX, deltaY, state.max, state.min, steps)
+    console.debug("per", state.startPercentage, (deltaX + deltaY)/(state.max - state.min), deltaX, deltaY, state.max, state.min, steps)
     let percentage = snapPercentage((state.startPercentage as number + (deltaX + deltaY)/(steps)), steps);
-    console.log("pr2", percentage)
+    console.debug("pr2", percentage)
     //const position2 = snapPosition(position, state, steps);
     const mouseAngle = (state.angleOffset + state.angleRange * percentage) % 360;
     let value = getValueFromPercentage({ ...state, percentage });
@@ -133,7 +133,7 @@ const reduceOnMove = (
         value = state.min;
     }
 
-    console.log("Value", value)
+    console.debug("Value", value)
     callbacks.onInteractiveChange(value);
     if (state.tracking) {
         //callbacks.onChange(value);
@@ -155,7 +155,7 @@ const reduceOnStop = (
     action: Action,
     callbacks: Callbacks,
 ): InternalState => {
-    console.log("STOP")
+    console.debug("STOP")
     if (state.value !== null) {
         if (!state.tracking) {
             //callbacks.onChange(state.value);
@@ -179,7 +179,7 @@ const reduceOnCancel = (
     action: Action,
     callbacks: Callbacks,
 ): InternalState => {
-    console.log("CANCEL")
+    console.debug("CANCEL")
     const percentage = state.startPercentage as number;
     const value = state.startValue as number;
     callbacks.onEnd();
@@ -202,7 +202,7 @@ const reduceOnSteps = (
     action: Action,
     callbacks: Callbacks,
 ): InternalState => {
-    console.log("STEPS")
+    console.debug("STEPS")
     if (action.direction === undefined) {
         throw Error('Missing direction from Steps action');
     }
@@ -234,7 +234,7 @@ const reduceOnSet = (
     if (action.steps === null || action.steps === undefined) return state;
     const newValue = action.steps;
     const percentage = getPercentageFromValue({ ...state, value: newValue });
-    console.log("KNOB: In Dispatch on Set", newValue, percentage)
+    console.debug("KNOB: In Dispatch on Set", newValue, percentage)
     return {
         ...state,
         value: newValue,
@@ -325,7 +325,7 @@ export default ({
     }, [callBackValue])
 
     const setValue = (newValue: number) => {
-        console.log("KNOB: In setValue");
+        console.debug("KNOB: In setValue");
         dispatch({
             type: "SET",
             steps: newValue
