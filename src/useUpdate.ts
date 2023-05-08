@@ -28,7 +28,7 @@ interface InternalState {
     steps?: number;
     svg: any;
     container: any;
-    callBackValue: number;
+    callBackValue: number | null;
     startX?: number;
     startY?: number;
 }
@@ -239,6 +239,7 @@ const reduceOnSet = (
         ...state,
         value: newValue,
         percentage: percentage,
+        callBackValue: null
     };
 };
 
@@ -304,7 +305,7 @@ export default ({
         container,
         size,
         steps,
-        callBackValue: initialValue || 0
+        callBackValue: null
     });
 
     useEffect(
@@ -319,8 +320,9 @@ export default ({
     );
 
     useEffect(() => {
-        
-        callbacks.onChange(callBackValue);
+        if (callBackValue !== null) {
+            callbacks.onChange(callBackValue);
+        }
         
     }, [callBackValue])
 
